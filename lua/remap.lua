@@ -1,4 +1,4 @@
-print("setup/remap.lua")
+--print("setup/remap.lua")
 vim.g.mapleader = ' '
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
@@ -8,6 +8,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 --vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz") --mover hacia abajo y centrar
 vim.keymap.set("n", "<C-u>", "<C-u>zz") --mover hacia arriba y centrar
+vim.keymap.set("n", "<leader>fmt", vim.lsp.buf.format)
 --vim.keymap.set("n", "n", "nzzzv")
 --vim.keymap.set("n", "N", "Nzzzv")
 

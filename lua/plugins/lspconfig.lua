@@ -33,7 +33,7 @@ return {
                 capabilities = capabilities,
                 settings = {
                     pylsp = {
-                        --configurationSources = 'flake8',
+                        configurationSources = 'flake8',
                         plugins = {
                             pycodestyle = {
                                 enabled = false,
@@ -50,6 +50,8 @@ return {
                                 ignore = {'W391'},
                                 indentSize = 4,
                             },
+                            jedi_completion = {enabled = true},
+                            autopep8 = {enabled = true},
                         },
                     },
                 },

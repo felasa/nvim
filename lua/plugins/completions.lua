@@ -1,15 +1,27 @@
 return {
-    {'hrsh7th/cmp-path'},
-    {'hrsh7th/cmp-cmdline'},
-    {'hrsh7th/cmp-buffer'},
-    {'hrsh7th/cmp-nvim-lsp'},
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-cmdline' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-nvim-lsp' },
     {
         'L3MON4D3/LuaSnip',
         dependencies = {
-            {'rafamadriz/friendly-snippets'},
-            {'saadparwaiz1/cmp_luasnip'},
+            { 'rafamadriz/friendly-snippets' },
+            { 'saadparwaiz1/cmp_luasnip' },
+        },
+        config = function()
+            local ls = require("luasnip")
+            vim.keymap.set({ "i" }, "<C-K>", function() ls.expand() end, { silent = true })
+            vim.keymap.set({ "i", "s" }, "<C-L>", function() ls.jump(1) end, { silent = true })
+            vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(-1) end, { silent = true })
 
-        }
+            vim.keymap.set({ "i", "s" }, "<C-E>", function()
+                if ls.choice_active() then
+                    ls.change_choice(1)
+                end
+            end, { silent = true })
+        end
+
     },
     {
         'hrsh7th/nvim-cmp',
@@ -45,16 +57,16 @@ return {
                     -- { name = 'ultisnips' }, -- For ultisnips users.
                     -- { name = 'snippy' }, -- For snippy users.
                 }, {
-                        { name = 'buffer' },
-                    })
+                    { name = 'buffer' },
+                })
             })
             -- Set configuration for specific filetype.
             cmp.setup.filetype('gitcommit', {
                 sources = cmp.config.sources({
                     { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
                 }, {
-                        { name = 'buffer' },
-                    })
+                    { name = 'buffer' },
+                })
             })
             -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
             cmp.setup.cmdline({ '/', '?' }, {
@@ -69,11 +81,10 @@ return {
                 sources = cmp.config.sources({
                     { name = 'path' }
                 }, {
-                        { name = 'cmdline' }
-                    }),
+                    { name = 'cmdline' }
+                }),
                 matching = { disallow_symbol_nonprefix_matching = false }
             })
         end
     },
 }
-

@@ -1,5 +1,4 @@
-print("setup/config.lua")
-
+--print("setup/config.lua")
 vim.opt.number = true
 vim.opt.relativenumber = true
 
