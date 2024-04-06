@@ -1,7 +1,6 @@
 --print("./init.lua")
 require("config")
 require("remap")
-
 vim.opt.foldlevel = 99
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
