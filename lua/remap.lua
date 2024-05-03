@@ -47,3 +47,5 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 --    vim.cmd("so")
 --end)
 --nd)
+
+vim.keymap.set('t', '<esc>', "<C-\\><C-n>")
