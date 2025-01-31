@@ -1,4 +1,4 @@
---print("setup/config.lua")
+--print("lua/config.lua")
 vim.opt.number = true
 vim.opt.relativenumber = true
 
@@ -28,13 +28,10 @@ vim.opt.splitright = true
 vim.wo.relativenumber = true
 vim.wo.number = true
 
--- Hacer terminal mas amigable
-vim.keymap.set('t', '<esc>', '<C-\\><C-n>')
-vim.keymap.set('v', '<leader>tt', 'y`>0j<esc><C-w>jpi<Enter><C-\\><C-n><C-w>k')
--- todo: Similar sin modo visual enviar linea desde cursor
-vim.keymap.set('v', '<leader>ty', 'y`>0j<esc><C-w>lpi<Enter><C-\\><C-n><C-w>h')
--- todo: Similar en modo visual enviar linea desde cursor
 local api = vim.api
+-- Hacer terminal mas amigable
+--vim.keymap.set('t', '<esc>', '<C-\\><C-n>')
+
 api.nvim_command("autocmd TermOpen * setlocal nonumber")
 api.nvim_command("autocmd TermOpen * setlocal norelativenumber")
 api.nvim_command("autocmd TermEnter * setlocal signcolumn=no")

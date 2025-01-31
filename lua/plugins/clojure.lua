@@ -200,8 +200,8 @@ return {
                         ["<leader>ks"] = { "<cmd>TSSexp slurp_right<cr>", desc = "Slurp Right" },
                         ["<leader>kB"] = { "<cmd>TSSexp barf_left<cr>", desc = "Barf Left" },
                         ["<leader>kb"] = { "<cmd>TSSexp barf_right<cr>", desc = "Barf Right" },
-                        ["<leader>kI"] = { "<cmd>TSSexp barf_right<cr>", desc = "Insert Head" },
-                        ["<leader>ki"] = { "<cmd>TSSexp barf_right<cr>", desc = "Insert Tail" },
+                        ["<leader>kI"] = { "<cmd>TSSexp insert_head<cr>", desc = "Insert Head" },
+                        ["<leader>ki"] = { "<cmd>TSSexp insert_tail<cr>", desc = "Insert Tail" },
                     },
                     t = {
                         -- terminal? mode key bindings
@@ -247,12 +247,12 @@ return {
                 options = {
                     g = {
                         -- Width of HUD as percentage of the editor width between 0.0 and 1.0. Default: `0.42`
-                        ["conjure#log#hud#width"] = 1,
+                        ["conjure#log#hud#width"] = 0.42, --from 1
                         -- Display HUD (REPL log). Default: `true`
-                        ["conjure#log#hud#enabled"] = false,
+                        ["conjure#log#hud#enabled"] = true,
                         -- HUD corner position (over-ridden by HUD cursor detection). Default: `"NE"`
                         -- Example: Set to `"SE"` and HUD width to `1.0` for full width HUD at bottom of screen
-                        ["conjure#log#hud#anchor"] = "SE",
+                        ["conjure#log#hud#anchor"] = "NE", --from SE
                         -- Open log at bottom or far right of editor, using full width or height. Default: `false`
                         ["conjure#log#botright"] = true,
                         -- Lines from top of file to check for `ns` form, to sett evaluation context Default: `24`

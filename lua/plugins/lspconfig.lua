@@ -2,7 +2,7 @@ return {
     {
         "williamboman/mason.nvim",
         lazy = false,
-        config = function ()
+        config = function()
             require("mason").setup()
         end
     },
@@ -12,10 +12,10 @@ return {
         opts = {
             auto_install = true,
         },
-        config = function ()
+        config = function()
             local masonlsp = require('mason-lspconfig')
             masonlsp.setup({
-                ensure_installed = {"r_language_server", "pylsp", "clojure_lsp", "lua_ls"},
+                ensure_installed = { "r_language_server", "pylsp", "clojure_lsp", "lua_ls" },
             })
         end
     },
@@ -37,21 +37,21 @@ return {
                         plugins = {
                             pycodestyle = {
                                 enabled = false,
-                                ignore = {'W391'},
+                                ignore = { 'W391' },
                                 maxLineLength = 100,
                             },
                             rope_completion = {
                                 enabled = true
                             },
-                            maccabe = {enabled = false},
-                            pyflakes = {enabled = false},
+                            maccabe = { enabled = false },
+                            pyflakes = { enabled = false },
                             flake8 = {
                                 enabled = true,
-                                ignore = {'W391'},
+                                ignore = { 'W391', 'E501' },
                                 indentSize = 4,
                             },
-                            jedi_completion = {enabled = true},
-                            autopep8 = {enabled = true},
+                            jedi_completion = { enabled = true },
+                            autopep8 = { enabled = true },
                         },
                     },
                 },
@@ -60,7 +60,7 @@ return {
                 capabilities = capabilities,
                 on_init = function(client)
                     local path = client.workspace_folders[1].name
-                    if vim.loop.fs_stat(path..'/.luarc.json') or vim.loop.fs_stat(path..'/.luarc.jsonc') then
+                    if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
                         return
                     end
 
@@ -91,6 +91,21 @@ return {
             lspconfig.clojure_lsp.setup({
                 capabilities = capabilities,
             })
+            -- if using nvim-metals remove this
+            --lspconfig.metals.setup({
+            --    capabilities = { workspace = { configuration = false } },
+            --    cmd = { 'metals' },
+            --    filetypes = { 'scala' },
+            --    init_options = {
+            --        compilerOptions = {
+            --            snippetAutoIndent = false
+            --        },
+            --        isHttpEnabled = true,
+            --        statusBarProvider = "show-message"
+            --    },
+            --    message_level = 4,
+            --    --root_dir = util.root_pattern("build.sbt", "build.sc", "build.gradle", "pom.xml")
+            --})
         end
     },
 }

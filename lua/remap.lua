@@ -1,4 +1,4 @@
---print("setup/remap.lua")
+--print("lua/remap.lua")
 vim.g.mapleader = ' '
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
@@ -49,3 +49,8 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 --nd)
 
 vim.keymap.set('t', '<esc>', "<C-\\><C-n>")
+
+vim.keymap.set('v', '<leader>tt', 'y`>0j<esc><C-w>jpi<Enter><C-\\><C-n><C-w>k', {noremap = true, buffer = false})
+-- todo: Similar en modo visual enviar linea desde cursor
+vim.keymap.set('v', '<leader>ty', 'y`>0j<esc><C-w>lpi<Enter><C-\\><C-n><C-w>h', {noremap = true})
+-- todo: Similar en modo visual enviar linea desde cursor

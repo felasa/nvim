@@ -1,6 +1,6 @@
 return {
     {
-        dir = "/home/federico/dev/neovim/nvim-python-repl",
+        "geg2102/nvim-python-repl",
         name = "nvim-python-repl",
         config = function()
             local plugin = require('nvim-python-repl')
