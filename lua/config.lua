@@ -22,9 +22,6 @@ vim.opt.colorcolumn = "100"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-
 vim.wo.relativenumber = true
 vim.wo.number = true
 

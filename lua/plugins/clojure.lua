@@ -217,7 +217,8 @@ return {
     {
         "Olical/conjure",
         -- load plugin on filetypes
-        filetype = lisp_dialects,
+        filetypes = lisp_dialects,
+        ft = {"clojure", "fennel"},
         dependencies = {
             "AstroNvim/astrocore",
             opts = {
@@ -226,7 +227,12 @@ return {
                         {
                             event = "BufNewFile",
                             pattern = { "conjure-log-*" },
-                            callback = function() vim.diagnostic.disable(0) end,
+                            callback = function()
+                                --print("New conjure log..")
+                                -- works but its re enabling when opening new file
+                                vim.diagnostic.disable(nil, 1)
+                                vim.diagnostic.enable(false)
+                            end,
                             desc = "Conjure Log disable LSP diagnostics",
                         },
                         {
@@ -246,6 +252,8 @@ return {
                 },
                 options = {
                     g = {
+                        -- Disable diagnostics in log 
+                        ["conjure#log#disable_diagnostics"] = true,
                         -- Width of HUD as percentage of the editor width between 0.0 and 1.0. Default: `0.42`
                         ["conjure#log#hud#width"] = 0.42, --from 1
                         -- Display HUD (REPL log). Default: `true`
@@ -271,6 +279,8 @@ return {
                         ["conjure#client#clojure#nrepl#eval#raw_out"] = true,
                         -- test runner "clojure" (clojure.test) "clojurescript" (cljs.test) "kaocha"
                         ["conjure#client#clojure#nrepl#test#runner"] = "clojure",
+                        -- ft, filetype, filetypes not picking up this might have done the trick
+                        ["conjure#filetypes"] = {"clojure", "fennel"},
                     },
                 },
             },

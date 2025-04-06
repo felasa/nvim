@@ -5,7 +5,12 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme everforest]])
+            local everforest = require("everforest")
+            everforest.setup({
+                background = "hard"
+            })
+            everforest.load()
+            --vim.cmd([[colorscheme everforest]])
         end
     },
     {
@@ -26,4 +31,8 @@ return {
             colorscheme = "rose-pine-dawn",
         },
     },
+    { "blazkowolf/gruber-darker.nvim",
+      priority = 1004,
+
+    }
 }

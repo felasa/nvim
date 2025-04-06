@@ -21,13 +21,16 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
+        dependencies = { "saghen/blink.cmp" },
         lazy = false,
         config = function()
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            -- with nvim-cmp: local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            local capabilities = require('blink.cmp').get_lsp_capabilities()
+            --vim.diagnostic.enable(true) fixed on the other lspconfig file
             local lspconfig = require('lspconfig')
             lspconfig.pylsp.setup({
                 capabilities = capabilities,
@@ -60,7 +63,8 @@ return {
                 capabilities = capabilities,
                 on_init = function(client)
                     local path = client.workspace_folders[1].name
-                    if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+                    if vim.uv.fs_stat(path .. '/.luarc.json') or
+                        vim.uv.fs_stat(path .. '/.luarc.jsonc') then
                         return
                     end
 
@@ -74,7 +78,7 @@ return {
                         workspace = {
                             checkThirdParty = false,
                             library = {
-                                vim.env.VIMRUNTIME
+                                vim.env.VIMRUNTIME,
                                 -- Depending on the usage, you might want to add additional paths here.
                                 -- "${3rd}/luv/library"
                                 -- "${3rd}/busted/library",
@@ -90,6 +94,27 @@ return {
             })
             lspconfig.clojure_lsp.setup({
                 capabilities = capabilities,
+                filetypes = { 'clojure', 'fennel' },
+                on_attach = function(client, bufnr)
+                    if string.sub(
+                         vim.fn.fnamemodify(
+                            vim.api.nvim_buf_get_name(bufnr),
+                            ":t"), 1, 12) == "conjure-log-"
+                    then
+                        vim.lsp.buf_detach_client(bufnr, client.id)
+                    end
+                end
+            })
+            lspconfig.clangd.setup({
+                capabilities_c = {
+                    offsetEncoding = {'utf-8', 'utf-16'},
+                    textDocument = {
+                      completion = {
+                        editsNearCursor = true
+                      }
+                    }
+                },
+                capabilities = require('blink.cmp').get_lsp_capabilities(capabilities_c)
             })
             -- if using nvim-metals remove this
             --lspconfig.metals.setup({

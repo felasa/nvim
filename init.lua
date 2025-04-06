@@ -71,3 +71,7 @@ local autocmds = {
 
 nvim_create_autogroups(autocmds)
 -- autocommands END
+-- Clerk commands
+local clerk = vim.fn.stdpath("config") .. "/clerk.vim"
+vim.cmd.source(clerk)
+
