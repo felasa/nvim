@@ -1,136 +1,39 @@
+if true then return {} end
 return {
-    {
-        "williamboman/mason.nvim",
-        lazy = false,
-        config = function()
-            require("mason").setup()
-        end
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        lazy = false,
-        opts = {
-            auto_install = true,
-        },
-        config = function()
-            local masonlsp = require('mason-lspconfig')
-            masonlsp.setup({
-                ensure_installed = { "r_language_server", "pylsp", "clojure_lsp", "lua_ls" },
-            })
-        end
-    },
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = { "saghen/blink.cmp" },
-        lazy = false,
-        config = function()
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-            vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
-            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
-            vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
-            -- with nvim-cmp: local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            local capabilities = require('blink.cmp').get_lsp_capabilities()
-            --vim.diagnostic.enable(true) fixed on the other lspconfig file
-            local lspconfig = require('lspconfig')
-            lspconfig.pylsp.setup({
-                capabilities = capabilities,
-                settings = {
-                    pylsp = {
-                        configurationSources = 'flake8',
-                        plugins = {
-                            pycodestyle = {
-                                enabled = false,
-                                ignore = { 'W391' },
-                                maxLineLength = 100,
-                            },
-                            rope_completion = {
-                                enabled = true
-                            },
-                            maccabe = { enabled = false },
-                            pyflakes = { enabled = false },
-                            flake8 = {
-                                enabled = true,
-                                ignore = { 'W391', 'E501' },
-                                indentSize = 4,
-                            },
-                            jedi_completion = { enabled = true },
-                            autopep8 = { enabled = true },
-                        },
-                    },
-                },
-            })
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-                on_init = function(client)
+    "neovim/nvim-lspconfig",
+    config = function()
+        require 'lspconfig'.lua_ls.setup {
+            on_init = function(client)
+                if client.workspace_folders then
                     local path = client.workspace_folders[1].name
-                    if vim.uv.fs_stat(path .. '/.luarc.json') or
-                        vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+                    if path ~= vim.fn.stdpath('config') and (vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc')) then
                         return
                     end
-
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        runtime = {
-                            -- Tell the language server which version of Lua you're using
-                            -- (most likely LuaJIT in the case of Neovim)
-                            version = 'LuaJIT'
-                        },
-                        -- Make the server aware of Neovim runtime files
-                        workspace = {
-                            checkThirdParty = false,
-                            library = {
-                                vim.env.VIMRUNTIME,
-                                -- Depending on the usage, you might want to add additional paths here.
-                                -- "${3rd}/luv/library"
-                                -- "${3rd}/busted/library",
-                            }
-                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                            -- library = vim.api.nvim_get_runtime_file("", true)
-                        }
-                    })
-                end,
-                settings = {
-                    Lua = {}
-                }
-            })
-            lspconfig.clojure_lsp.setup({
-                capabilities = capabilities,
-                filetypes = { 'clojure', 'fennel' },
-                on_attach = function(client, bufnr)
-                    if string.sub(
-                         vim.fn.fnamemodify(
-                            vim.api.nvim_buf_get_name(bufnr),
-                            ":t"), 1, 12) == "conjure-log-"
-                    then
-                        vim.lsp.buf_detach_client(bufnr, client.id)
-                    end
                 end
-            })
-            lspconfig.clangd.setup({
-                capabilities_c = {
-                    offsetEncoding = {'utf-8', 'utf-16'},
-                    textDocument = {
-                      completion = {
-                        editsNearCursor = true
-                      }
+
+                client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using
+                        -- (most likely LuaJIT in the case of Neovim)
+                        version = 'LuaJIT'
+                    },
+                    -- Make the server aware of Neovim runtime files
+                    workspace = {
+                        checkThirdParty = false,
+                        library = {
+                            vim.env.VIMRUNTIME
+                            -- Depending on the usage, you might want to add additional paths here.
+                            -- "${3rd}/luv/library"
+                            -- "${3rd}/busted/library",
+                        }
+                        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+                        -- library = vim.api.nvim_get_runtime_file("", true)
                     }
-                },
-                capabilities = require('blink.cmp').get_lsp_capabilities(capabilities_c)
-            })
-            -- if using nvim-metals remove this
-            --lspconfig.metals.setup({
-            --    capabilities = { workspace = { configuration = false } },
-            --    cmd = { 'metals' },
-            --    filetypes = { 'scala' },
-            --    init_options = {
-            --        compilerOptions = {
-            --            snippetAutoIndent = false
-            --        },
-            --        isHttpEnabled = true,
-            --        statusBarProvider = "show-message"
-            --    },
-            --    message_level = 4,
-            --    --root_dir = util.root_pattern("build.sbt", "build.sc", "build.gradle", "pom.xml")
-            --})
-        end
-    },
+                })
+            end,
+            settings = {
+                Lua = {}
+            }
+        }
+    end
 }
