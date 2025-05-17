@@ -58,17 +58,30 @@ local autocmds = {
 }
 nvim_create_autogroups(autocmds)
 -- dont enable native completion because it doubles with blink
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(ev)
-        --local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        --if client:supports_method('textDocument/completion') then
-        --    vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-        --end
-    end,
-})
+--vim.api.nvim_create_autocmd('LspAttach', {
+--    callback = function(ev)
+--        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+--        if client:supports_method('textDocument/completion') then
+--            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+--        end
+--    end,
+--})
 
-vim.cmd("set completeopt+=noselect")
+vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+        vim.highlight.on_yank({higroup='IncSearch', timeout=200})
+    end
+})
+vim.cmd("set completeopt+=noselect,menuone")
 vim.o.winborder = 'rounded'
 
-vim.lsp.enable({'lua_ls', 'clojure_lsp', 'pylsp', 'r_ls', 'scala'})
+vim.lsp.enable({'lua_ls', 'clojure_lsp', 'pylsp', 'r_ls', 'scala', 'fennel'})
 
+vim.api.nvim_create_autocmd("BufNewFile",
+    {
+        pattern = "conjure-log-*",
+        callback = function()
+            --vim.diagnostic.enable(false, {bufnr = vim.fn.bufnr()})
+            vim.diagnostic.enable(false)
+        end
+    })

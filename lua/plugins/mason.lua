@@ -1,3 +1,4 @@
+--we're manually installing lsps now
 if true then return {} end
 return {
     {

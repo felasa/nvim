@@ -69,6 +69,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 -- END LSP
 
+--toggle diagnostics in current buffer, because of conjure log
+vim.keymap.set('n', '<leader>tdg', function() vim.diagnostic.enable(false, {bufnr=0}) end)
+
 -- dont know what most of these do so ill comment them till i do and know i want them
 --vim.keymap.set("n", "J", "mzJ`z")
 --vim.keymap.set("n", "n", "nzzzv")

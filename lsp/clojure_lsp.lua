@@ -1,5 +1,5 @@
 return {
     cmd = {'clojure-lsp'},
-    filetypes = { 'clojure', 'fennel' },
+    filetypes = { 'clojure'},
     root_markers = {'deps.edn', 'project.clj'},
 }

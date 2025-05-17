@@ -1,4 +1,12 @@
 --if true then return {}
+--conjure_log_disable_lsp = {
+--   {
+--     event = "BufNewFile",
+--     pattern = { "conjure-log-*" },
+--     callback = function() vim.diagnostic.disable(0) end,
+--     desc = "Conjure Log disable LSP diagnostics",
+--   }
+--}
 local lisp_dialects = { "clojure", "scheme", "lisp", "racket", "hy",
     "fennel", "janet", "carp", "wast", "yuck" }
 return {
@@ -19,14 +27,58 @@ return {
     --        },
     --    },
     --},
+    { "gpanders/nvim-parinfer" },
+    { "julienvincent/nvim-paredit" },
     {
         "dundalek/parpar.nvim",
         dependencies = { "gpanders/nvim-parinfer", "julienvincent/nvim-paredit" },
         filetypes = lisp_dialects,
-        opts = {}
+        opts = {},
+        config = function()
+            local paredit = require("nvim-paredit")
+            local parpar = require("parpar")
+            parpar.setup({
+                paredit = {
+                    keys = {
+                        ["<localleader>>)"] = { paredit.api.slurp_forwards, "Slurp forwards" },
+                        ["<localleader>>("] = { paredit.api.barf_backwards, "Barf backwards" },
+
+                        ["<localleader><)"] = { paredit.api.barf_forwards, "Barf forwards" },
+                        ["<localleader><("] = { paredit.api.slurp_backwards, "Slurp backwards" },
+
+                        ["<localleader>>e"] = { paredit.api.drag_element_forwards, "Drag element right" },
+                        ["<localleader><e"] = { paredit.api.drag_element_backwards, "Drag element left" },
+
+                        ["<localleader>>p"] = { paredit.api.drag_pair_forwards, "Drag element pairs right" },
+                        ["<localleader><p"] = { paredit.api.drag_pair_backwards, "Drag element pairs left" },
+
+                        ["<localleader>>f"] = { paredit.api.drag_form_forwards, "Drag form right" },
+                        ["<localleader><f"] = { paredit.api.drag_form_backwards, "Drag form left" },
+                    }
+                }
+            })
+        end
     },
     -- Is this redundant with parpar? why does practicalli have both
-    --{"PaterJason/nvim-treesitter-sexp"},
+    -- anyway it's broken for nvim 0.11
+    --{
+    --    "PaterJason/nvim-treesitter-sexp",
+    --    opts = {
+    --        enabled = true,
+    --        keymaps = {
+    --            swap_prev_elem = "<localleader><e",
+    --            swap_next_elem = "<localleader>>e",
+    --            swap_prev_form = "<localleader><f",
+    --            swap_next_form = "<localleader>>f",
+    --            slurp_left = "<localleader><(",
+    --            slurp_right = "<localleader>>(",
+    --            barf_left = "<localleader>>(",
+    --            barf_right = "<localleader><)",
+    --            insert_head = "<localleader><I",
+    --            insert_tail = "<localleader>>I",
+    --        },
+    --    }
+    --},
     {
         "Olical/conjure",
         -- load plugin on filetypes
@@ -36,6 +88,7 @@ return {
         init = function()
             -- Disable diagnostics in log
             vim.g["conjure#log#disable_diagnostics"] = true
+            vim.g["conjure#log#treesitter"] = false
             -- Width of HUD as percentage of the editor width between 0.0 and 1.0. Default: `0.42`
             vim.g["conjure#log#hud#width"] = 0.42
             --from 1
