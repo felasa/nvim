@@ -61,7 +61,7 @@ return {
                     conjure = {
                         name = 'cmp_conjure',
                         module = 'blink.compat.source',
-                        --    score_offset = -3,
+                        score_offset = -7,
                         opts = {filetypes = {"clojure"}}
                     },
                 },

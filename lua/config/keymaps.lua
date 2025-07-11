@@ -1,4 +1,4 @@
-print("config/keymaps")
+--print("config/keymaps")
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 --moves selected (visual) line up and down

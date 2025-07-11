@@ -5,12 +5,25 @@ return {
     lazy = false,
     opts = {
         picker = {
+            sources = {
+                explorer = {
+                    layout = {
+                        preset = "sidebar",
+                        preview = true,
+                        layout = {position = "left"},
+                    }
+                }
+            },
             layout = {
                 preset = "ivy",
                 layout = { position = "bottom" }
             }
         },
         indent = {},
+        image = {
+            convert = { notify = false,},
+        },
+        explorer = { replace_netrw = true },
     },
     keys = {
         { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },

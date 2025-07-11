@@ -20,6 +20,6 @@ require("lazy").setup({
         { import = "plugins" },
     },
     install = { colorscheme = { "everforest" } },
-    checker = { enabled = true },
+    checker = { enabled = true, notify = false },
 })
 

@@ -87,6 +87,7 @@ return {
         lazy = true,
         init = function()
             -- Disable diagnostics in log
+            vim.g["conjure#mapping#doc_word"] = "gk"
             vim.g["conjure#log#disable_diagnostics"] = true
             vim.g["conjure#log#treesitter"] = false
             -- Width of HUD as percentage of the editor width between 0.0 and 1.0. Default: `0.42`
