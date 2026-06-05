@@ -1,0 +1,2 @@
+--print("hello form clojurefile")
+--vim.diagnostic.enable(false, {bufnr = vim.fn.bufnr()})
